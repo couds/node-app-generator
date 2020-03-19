@@ -63,7 +63,7 @@ module.exports = {
                 '@babel/env',
                 {
                   targets: {
-                    node: '12',
+                    node: 'current',
                   },
                 },
               ],

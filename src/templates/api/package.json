@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
+    "watch": "webpack --watch",
     "build-image": "docker build -t ${DOCKER_REGISTRY}project__name__ .",
     "nodemon": "nodemon dist",
     "lint": "eslint . --fix"

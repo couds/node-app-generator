@@ -1,4 +1,4 @@
-const winston = require('winston/lib/winston/config');
+import winston from 'winston';
 
 export default winston.createLogger({
   level: 'info',
