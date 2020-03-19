@@ -1,6 +1,6 @@
 {
   "name": "@couds/node-app-generator",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Currently this package only have one type of template (API), this template have what I think is the bare minimum you should have on your api.",
   "main": "index.js",
   "scripts": {
