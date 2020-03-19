@@ -1,0 +1,58 @@
+{
+  "name": "project__name__",
+  "version": "0.0.1-0",
+  "description": "proposal for a way to organize your api projects",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "build-image": "docker build -t ${DOCKER_REGISTRY}project__name__ .",
+    "nodemon": "nodemon dist",
+    "lint": "eslint . --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "7.8.4",
+    "@babel/core": "7.8.7",
+    "@babel/plugin-syntax-dynamic-import": "7.8.3",
+    "@babel/preset-env": "7.8.7",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "10.1.0",
+    "babel-loader": "8.0.6",
+    "babel-plugin-macros": "2.8.0",
+    "babel-preset-react-app": "9.1.1",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb-base": "14.1.0",
+    "eslint-config-prettier": "6.10.0",
+    "eslint-import-resolver-webpack": "0.12.1",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-prettier": "3.1.2",
+    "nodemon": "2.0.2",
+    "prettier": "1.19.1",
+    "prettier-eslint": "9.0.1",
+    "webpack": "4.42.0",
+    "webpack-cli": "3.3.11"
+  },
+  "dependencies": {
+    "body-parser": "1.19.0",
+    "express": "4.17.1",
+    "morgan": "1.9.1",
+    "winston": "3.2.1"
+  },
+  "optionalDependencies": {
+    "husky": "4.2.3",
+    "lint-staged": "10.0.8"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}
