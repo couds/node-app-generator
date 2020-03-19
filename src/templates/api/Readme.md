@@ -6,7 +6,11 @@ This is a proposal for a way to organize your api projects.
 
 ## How to Start
 
-Once the template is instaled you need to run `npm run watch` to start watching your changes to transpile, after the first build its finish you can run `npm run nodemon` to start the server. 
+First you need to install all dependencies `npm i` or `yarn` will do the trick!
+
+Once the template is instaled you need to run `npm run watch` to start watching your changes to transpile, after the first build its finish you can run `npm run nodemon` to start the server.
+
+Now you can navegate to [http://localhost:3000/v1/version](http://localhost:3000/v1/version)
 
 By default this will liten to `port 3000` you can change this with a env variable PORT with the new port you want to use, `PORT=3001 npm run nodemon` will start the server on port 3001.
 
@@ -47,6 +51,20 @@ Out of the box there are 2 ways to deploy an application using this template:
     -- database-mysql.js
     -- ...other-services...
   ```
+
+## API Routes
+
+The structure was made thinking of versioning the api using the url, and this will be reflected on the folder structure,
+
+```
+src/
+  -- enpoints/
+    -- v1
+    -- v2
+    ...
+```
+
+`/v[X]/my-endpoint` and also have a `/latest/my-endpoint` that should point to the latest version of your API (You can disable this in `src/endpoints/index.js`) 
 
 ## Structure
 

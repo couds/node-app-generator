@@ -11,3 +11,17 @@ Currently this package only have one type of template (API), this template have 
 
 
 Code fun =)
+
+## Add your own template
+
+New templates are more than welcome, to add it just create a PR adding your project template in `src/templates/[your-template-name]`
+
+### To take into account
+
+There are some placeholders that will be string replaced when a user create a template, for example `project__name__` will be replaced for the actual project name.
+
+Probably there will be more placeholders in the future, but should prbably follow the same convention
+
+- All lowercase
+- Snake_case with double underscore
+- Ends with double underscore
