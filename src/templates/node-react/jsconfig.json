@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+      "target": "ES6",
+      "baseUrl": ".",
+      "lib": [
+          "dom",
+          "es2017"
+      ],
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "paths": {
+          "*": [
+              "src/shared/*",
+              "src/server/*",
+              "src/client/*",
+              "node_modules/*"
+          ]
+      },
+      "allowSyntheticDefaultImports": true
+  },
+  "exclude": [
+      "dist"
+  ]
+}

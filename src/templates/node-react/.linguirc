@@ -1,0 +1,7 @@
+{
+   "localeDir": "src/shared/services/locales/messages/",
+   "srcPathDirs": ["src/"],
+   "format": "po",
+   "fallbackLocale": "en",
+   "sourceLocale": "en",
+}
