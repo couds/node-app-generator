@@ -7,6 +7,7 @@ export default compose(
   connect(
     (state) => ({
       currentValue: dummy.selectors.getCurrent(state),
+      results: dummy.selectors.getSearch(state),
       isLoading: loading.selectors.isLoading(state, dummy.CONSTANTS.SEARCH),
     }),
     {

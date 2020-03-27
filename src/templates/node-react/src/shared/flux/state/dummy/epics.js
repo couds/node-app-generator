@@ -12,7 +12,7 @@ export default {
       map(() => actions.pong()),
     ),
   search: helpers.createRequestEpic(CONSTANTS.SEARCH, ({ payload }) => ({
-    url: `https://www.npmjs.com/search/suggestions?q=${encodeURIComponent(payload.term)}`,
+    url: `https://randomuser.me/api/?results=${parseInt(payload.total, 10)}`,
     method: 'get',
   })),
 };

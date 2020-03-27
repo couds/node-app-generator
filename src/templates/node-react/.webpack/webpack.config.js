@@ -1,3 +1,4 @@
+require("@babel/register");
 const path = require('path');
 const webpack = require('webpack');
 const { createVariants } = require('parallel-webpack');
@@ -10,7 +11,7 @@ const serverConfig = require('./webpack.server.config');
 
 const pkg = require('../package.json');
 const version = process.env.VERSION || `dev`;
-const locales = fs.readdirSync(path.resolve(__dirname, '../src/shared/services/locales/messages')).filter((file) => file.length === 2);
+process.env.LOCALES = fs.readdirSync(path.resolve(__dirname, '../src/shared/services/locales/messages')).filter((file) => file.length === 2).join(',');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -38,7 +39,7 @@ const baseConfig = (options) => ({
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
-    // new webpack.optimize.AggressiveMergingPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.LoaderOptionsPlugin({
       minimize: isProduction,
       debug: false,
@@ -49,7 +50,7 @@ const baseConfig = (options) => ({
       'process.env.VERSION': JSON.stringify(process.env.VERSION),
       'process.env.ASSETS_PATH': JSON.stringify(`${options.cdn}${options.basePath}`),
       'process.env.IS_SERVER': options.isServer,
-      'process.env.LOCALES': JSON.stringify(locales),
+      'process.env.LOCALES': JSON.stringify(process.env.LOCALES),
     }),
   ],
   module: {
@@ -147,8 +148,7 @@ const createConfig = ({ isServer }) => {
   const options = {
     isServer,
     basePath,
-    cdn: process.env.CDN ? `${process.
-      env.CDN}/` : '/public/',
+    cdn: process.env.CDN ? `${process.env.CDN}/` : '/public/',
   }
   const smp = new SpeedMeasurePlugin();
   return smp.wrap(merge(baseConfig(options), isServer ? serverConfig(options) : clientConfig(options)));

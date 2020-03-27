@@ -1,38 +1,22 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
-const S3Plugin = require('webpack-s3-uploader');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const getConfig = require('../src/server/config').clean;
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = (options) => {
-  const plugins = [];
-
-  if (process.env.SENTRY_AUTH_TOKEN) {
-    plugins.push(new SentryCliPlugin({
-      include: `dist/public/${options.basePath}/javascripts`,
-      configFile: 'sentry.properties',
-      ignore: ['node_modules', 'webpack.config.js'],
-      release: options.version,
-      urlPrefix: `${process.env.CDN ? '~' : 'public'}/${options.basePath}/javascripts`,
-    }));
-  }
-
-  if (process.env.CDN) {
-    plugins.push(new S3Plugin({
-      exclude: /.*\.map$/,
-      s3Options: {
-        accessKeyId: '',
-        secretAccessKey: '',
-        region: '',
-      },
-      s3UploadOptions: {
-        Bucket: '',
-        CacheControl: 'public, max-age=31536000',
-      },
-    }));
-  }
+  const plugins = [
+    new HtmlWebpackPlugin({
+        hash: true,
+        config: JSON.stringify(getConfig()),
+        template: path.join(__dirname, 'template.html'),
+        filename: path.join(__dirname, '../dist/index.html'),
+    }),
+  ];
 
   return {
     entry: {
@@ -81,9 +65,6 @@ module.exports = (options) => {
     },
     resolve: {
       modules: [path.resolve(__dirname, '../src/client')],
-      alias: {
-        sentry: '@sentry/browser',
-      },
     },
   };
 };

@@ -1,6 +1,6 @@
 const config = {
   locales: {
-    availables: process.env.LOCALES,
+    availables: (process.env.LOCALES || '').split(','),
   },
 };
 

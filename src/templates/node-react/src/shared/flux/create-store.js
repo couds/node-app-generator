@@ -14,18 +14,13 @@ const INITIAL_STATE = {};
 
 export const history = createHistory();
 
-export default (initialState = INITIAL_STATE, dependencies = {}) => {
-  const epicMiddleware = createEpicMiddleware({
-    dependencies: {
-      ...dependencies,
-    },
-  });
-
+export default (initialState = INITIAL_STATE) => {
+  const epicMiddleware = createEpicMiddleware();
   const store = reduxCreateStore(
     combineReducers({
       router: connectRouter(history),
       dummy: helpers.createReducer(dummy.reducers, dummy.INITIAL_STATE),
-      loading: helpers.createReducer(dummy.reducers, dummy.INITIAL_STATE),
+      loading: helpers.createReducer(loading.reducers, loading.INITIAL_STATE),
     }),
     initialState,
     compose(

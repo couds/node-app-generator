@@ -4,7 +4,4 @@ import LoadingEpics from './loading/epics';
 
 const getEpics = (obj) => Object.values(obj);
 
-export default combineEpics(
-  ...getEpics(DummyEpics),
-  ...getEpics(LoadingEpics),
-);
+export default combineEpics(...getEpics(DummyEpics), ...getEpics(LoadingEpics));

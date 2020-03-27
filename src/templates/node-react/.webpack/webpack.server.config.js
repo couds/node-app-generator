@@ -20,9 +20,6 @@ module.exports = (options) => {
     },
     resolve: {
       modules: [path.resolve(__dirname, '../src/server')],
-      alias: {
-        sentry: '@sentry/node',
-      },
     },
   };
 };

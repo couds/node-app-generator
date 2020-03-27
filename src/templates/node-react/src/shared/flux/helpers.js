@@ -10,6 +10,7 @@ const getHandlerNames = (type) => ({
   error: `${type}_FAILED`,
   finish: `${type}_FINISH`,
   progress: `${type}_PROGRESS`,
+  retry: `${type}_RETRY`,
 });
 
 const createRequestEpicHandler = (
@@ -30,7 +31,7 @@ const createRequestEpicHandler = (
     [events.cancel]: handlers.cancel,
     [events.error]: handlers.error,
     [events.finish]: handlers.finish,
-    [events.finish]: handlers.progress,
+    [events.progress]: handlers.progress,
   };
 };
 
@@ -63,24 +64,25 @@ export const genericRetryStrategy = ({ maxRetryAttempts = 10, scalingDuration = 
  * @param {Object|function<Object>} params Object that will be passed to the axios function to do the request
  */
 const createRequestEpic = (type, params) => (action$, state$) => {
+  const handlerNames = getHandlerNames(type);
   const actions = {
     success: (data, action) => ({
-      type: `${type}_SUCCESS`,
+      type: handlerNames.success,
       payload: data,
       context: action,
     }),
     error: (err, action) => ({
-      type: `${type}_FAILED`,
+      type: handlerNames.error,
       payload: err,
       context: action,
     }),
-    cancel: (action) => ({ type: `${type}_CANCELED`, context: action }),
-    finish: (action) => ({ type: `${type}_FINISH`, context: action }),
-    progress: (action) => ({ type: `${type}_PROGRESS`, context: action }),
-    retry: (action, attempt) => ({ ...action, __attempt: attempt + 1, type: `${type}_RETRY` }),
+    cancel: (action) => ({ type: handlerNames.cancel, context: action }),
+    finish: (action) => ({ type: handlerNames.finish, context: action }),
+    progress: (action) => ({ type: handlerNames.progress, context: action }),
+    retry: (action, attempt) => ({ ...action, __attempt: attempt + 1, type: handlerNames.retry }),
   };
   return action$.pipe(
-    ofType(type, `${type}_RETRY`),
+    ofType(type, handlerNames.retry),
     mergeMap((action) => {
       let progress = 0;
       const attempt = action.__attempt || 0;
@@ -94,15 +96,15 @@ const createRequestEpic = (type, params) => (action$, state$) => {
       });
 
       const blockers$ = action$.pipe(
-        ofType(`${type}_CANCEL`),
+        ofType(handlerNames.cancel),
         tap(() => request.cancel()),
         mapTo(actions.cancel(action)),
       );
 
-      const ajax$ = from(request.promise).pipe(
-        map((data) => actions.success(data, action)),
+      const ajax$ = from(request).pipe(
+        map((data) => actions.success(data.data, action)),
         catchError((error) => {
-          if (attempt < (params.retries || 10)) {
+          if (attempt < (requestData.retries || 10)) {
             let waitFor = attempt * scalingDuration;
             if (waitFor > 60000) {
               waitFor = 60000;

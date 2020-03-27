@@ -1,8 +1,19 @@
 {
-  "presets": ["@babel/preset-react"],
+  "presets": [
+    "@babel/preset-react",
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ]
+  ],
   "sourceType": "unambiguous",
   "plugins": [
-    "macros",
-    "@babel/plugin-syntax-dynamic-import"
+    "babel-plugin-styled-components",
+    "babel-plugin-macros",
+    "@babel/plugin-proposal-object-rest-spread"
   ]
 }
