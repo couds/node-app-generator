@@ -39,6 +39,20 @@ const Button = styled.button`
   border: 1px solid ${({ color, theme }) => theme.color[`${color}-reverse`] || 'white'};
 `;
 
+const UserContainer = styled.div`
+  display: flex;
+  margin: 1rem 0;
+  img {
+    margin-right: 1rem;
+    border-radius: 0.5rem;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+`;
+
 const Store = ({ currentValue, ping, search, results, isLoading }) => {
   const [currentTab, setCurrentTab] = useState('ping');
   return (
@@ -60,20 +74,20 @@ const Store = ({ currentValue, ping, search, results, isLoading }) => {
         </div>
       )}
       {currentTab === 'api' && (
-        <div>
-          <Button disabled={isLoading} type="button" onClick={() => search(3)} style={{ marginTop: '1rem' }}>
+        <div style={{ width: '100%' }}>
+          <Button disabled={isLoading} type="button" onClick={() => search(3)} style={{ marginTop: '1rem', marginBottom: '1rem', width: '100%' }}>
             {isLoading ? 'Loading' : 'Search 3 random users'}
           </Button>
           {results.map((user) => (
-            <div key={user.login.uuid}>
+            <UserContainer key={user.login.uuid}>
               <img src={user.picture.medium} alt="avatar" />
-              <div>
-                {user.name.title}
-                {user.name.first}
-                {user.name.last}
-                {user.email}
+              <div className="content">
+                <div>
+                  {user.name.title} {user.name.first} {user.name.last}
+                </div>
+                <div>{user.email}</div>
               </div>
-            </div>
+            </UserContainer>
           ))}
         </div>
       )}
