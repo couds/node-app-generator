@@ -1,7 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 require("@babel/register");
 const getConfig = require('../src/server/config').clean;
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = (options) => {
   const plugins = [
@@ -24,6 +27,40 @@ module.exports = (options) => {
       sourceMapFilename: '[file].map',
     },
     plugins,
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+        minSize: 100000,
+      },
+      minimize: isProduction,
+      minimizer: [
+        // This is only used in production mode
+        new TerserPlugin({
+          terserOptions: {
+            parse: {
+              ecma: 8,
+            },
+            compress: {
+              ecma: 5,
+              warnings: false,
+              comparisons: false,
+              inline: 2,
+            },
+            mangle: {
+              safari10: true,
+            },
+            output: {
+              ecma: 5,
+              comments: false,
+              ascii_only: true,
+            },
+          },
+          parallel: true,
+          cache: true,
+          sourceMap: isProduction,
+        }),
+      ],
+    },
     resolve: {
       modules: [path.resolve(__dirname, '../src/client')],
     },
