@@ -1,10 +1,8 @@
-require("@babel/register");
 const path = require('path');
 const webpack = require('webpack');
 const { createVariants } = require('parallel-webpack');
 const fs = require('fs');
 const merge = require('webpack-merge');
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
  
 const clientConfig = require('./webpack.client.config');
 const serverConfig = require('./webpack.server.config');
@@ -24,13 +22,6 @@ const baseConfig = (options) => ({
   mode: isProduction ? 'production' : 'development',
   devtool: isProduction ? 'source-maps' : 'eval-cheap-module-source-map',
   cache: true,
-  stats: {
-    colors: false,
-    errorDetails: false,
-    errors: true,
-    chunks: true,
-    chunkGroups: true,
-  },
   watchOptions: {
     poll: 1000,
     ignored: [
@@ -80,7 +71,7 @@ const baseConfig = (options) => ({
         }
       },
       {
-        test: /\.ts$/,
+        test: /\.(ts)|(flow)|(md)$/,
         use: 'null-loader',
       },
       {
@@ -115,12 +106,16 @@ const baseConfig = (options) => ({
         }]
       },
       {
-        test: /\.(jpg|png|gif|webp)$/,
-        loader: 'file-loader',
-        options: {
-          emitFile: !options.isServer,
-          name: `${options.basePath}/images/[hash].[ext]`,
-        },
+        test: /\.(jpe?g|png|gif|webp)$/,
+        use:[{
+          loader: 'file-loader',
+          options: {
+            emitFile: !options.isServer,
+            name: `${options.basePath}/images/[hash].[ext]`,
+          },
+        }, {
+          loader: 'image-webpack-loader',
+        }],
       },
       {
         test: /\.(mp4)$/,
@@ -150,8 +145,7 @@ const createConfig = ({ isServer }) => {
     basePath,
     cdn: process.env.CDN ? `${process.env.CDN}/` : '/public/',
   }
-  const smp = new SpeedMeasurePlugin();
-  return smp.wrap(merge(baseConfig(options), isServer ? serverConfig(options) : clientConfig(options)));
+  return merge(baseConfig(options), isServer ? serverConfig(options) : clientConfig(options));
 };
 
 module.exports = createVariants({}, variants, createConfig);

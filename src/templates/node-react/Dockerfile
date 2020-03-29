@@ -2,14 +2,17 @@ FROM node:12 as base
 WORKDIR /code
 ADD package.json package.json
 ADD package-lock.json package-lock.json
-RUN npm ci --silent --no-optionals
+RUN apt-get update && apt-get install libgl1 --yes
+RUN npm ci --silent --no-optional
 
 FROM base as builder
 ADD src src
 ADD .webpack .webpack
 ADD .linguirc .linguirc
+ADD .babelrc .babelrc
 ARG NODE_ENV=production
 ARG VERSION
+ARG CDN
 RUN npm run build
 
 FROM node:12-alpine

@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -13,6 +14,9 @@ module.exports = (options) => {
       __filename: false,
       __dirname: false,
     },
+    plugins: [
+      new webpack.optimize.LimitChunkCountPlugin({ maxChunks:1 })
+    ],
     output: {
       filename: '[name].js',
       publicPath: options.cdn,

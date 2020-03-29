@@ -10,7 +10,6 @@ import { Localization } from 'services/hooks/use-language';
 import Loader from 'views/components/loader';
 
 import Home from 'views/screens/home';
-import Docs from 'views/screens/docs';
 import Store from 'views/screens/store';
 import Layout from 'views/components/layout';
 
@@ -40,10 +39,9 @@ const App = ({ catalogs, locale, store, ...props }) => (
       <Localization catalogs={catalogs} locale={locale}>
         <Router {...props}>
           <Layout>
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={<Loader key="lazy-loader" />}>
               <Switch>
                 <Route component={Home} path="/:lang" exact />
-                <Route component={Docs} path="/:lang/docs" exact />
                 <Route component={Store} path="/:lang/store" exact />
               </Switch>
             </Suspense>

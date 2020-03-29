@@ -1,7 +1,10 @@
-import { ofType } from 'redux-observable';
+import { createEpicMiddleware, ofType, combineEpics } from 'redux-observable';
 import { of, race, from, concat, interval, merge, throwError, timer } from 'rxjs';
 import { map, mapTo, tap, takeUntil, delay, catchError, mergeMap } from 'rxjs/operators';
 import axios from 'axios';
+import { createStore as reduxCreateStore, applyMiddleware, compose, combineReducers } from 'redux';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
+import createHistory from 'services/history';
 
 const getHandlerNames = (type) => ({
   start: type,
@@ -131,9 +134,50 @@ const createRequestEpic = (type, params) => (action$, state$) => {
   );
 };
 
+const history = createHistory();
+
+/**
+ *
+ * @param {Object} storeObject
+ * @param {Object} initialState
+ */
+const createStore = (storeObject, initialState = {}) => {
+  const epicMiddleware = createEpicMiddleware();
+
+  const reducers = Object.entries(storeObject).reduce(
+    (acc, [field, storeObj]) => {
+      return {
+        ...acc,
+        ...(storeObj.reducers && { [field]: createReducer(storeObj.reducers, storeObj.INITIAL_STATE || {}) }),
+      };
+    },
+    {
+      router: connectRouter(history),
+    },
+  );
+
+  const store = reduxCreateStore(
+    combineReducers(reducers),
+    initialState,
+    compose(
+      applyMiddleware(epicMiddleware, routerMiddleware(history)),
+      // eslint-disable-next-line no-underscore-dangle
+      (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()) || ((f) => f),
+    ),
+  );
+
+  const epics = Object.values(storeObject).reduce((acc, storeObj) => {
+    return acc.concat(storeObj.epics ? Object.values(storeObj.epics) : []);
+  }, []);
+  epicMiddleware.run(combineEpics(...epics));
+
+  return store;
+};
+
 export default {
   createRequestEpic,
   createRequestEpicHandler,
   createReducer,
   getHandlerNames,
+  createStore,
 };

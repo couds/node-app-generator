@@ -1,7 +1,7 @@
+require("@babel/register");
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
 const getConfig = require('../src/server/config').clean;
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
@@ -11,7 +11,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 module.exports = (options) => {
   const plugins = [
     new HtmlWebpackPlugin({
-        hash: true,
+        hash: false,
         config: JSON.stringify(getConfig()),
         template: path.join(__dirname, 'template.html'),
         filename: path.join(__dirname, '../dist/index.html'),

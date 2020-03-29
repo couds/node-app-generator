@@ -17,14 +17,30 @@ try {
   console.error('could not remove server state element');
 }
 
-if (!isBot) {
-  render(<App locale={window.__LOCALE__} store={store} />, document.getElementById('react-app'));
+function boot() {
+  function run() {
+    if (!isBot) {
+      render(<App locale={window.__LOCALE__} store={store} />, document.getElementById('react-app'));
+    } else {
+      import(`services/locales/messages/${window.__LOCALE__}/messages`).then((langData) => {
+        const catalogs = {
+          [window.__LOCALE__]: langData.default,
+        };
+        // TODO: Find a way to avoid client complain about server and client not match due the lazy loading.
+        hydrate(<App catalogs={catalogs} locale={window.__LOCALE__} store={store} />, document.getElementById('react-app'));
+      });
+    }
+  }
+
+  if (['complete', 'loaded', 'interactive'].indexOf(document.readyState) !== -1 && document.body) {
+    run();
+  } else {
+    document.addEventListener('DOMContentLoaded', run, false);
+  }
+}
+
+if (!window.Intl) {
+  import('intl').then(boot);
 } else {
-  import(`services/locales/messages/${window.__LOCALE__}/messages`).then((langData) => {
-    const catalogs = {
-      [window.__LOCALE__]: langData.default,
-    };
-    // TODO: Find a way to avoid client complain about server and client not match due the lazy loading.
-    hydrate(<App catalogs={catalogs} locale={window.__LOCALE__} store={store} />, document.getElementById('react-app'));
-  });
+  boot();
 }

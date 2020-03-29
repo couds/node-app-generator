@@ -37,11 +37,8 @@ const Layout = ({ children }) => (
         <Link to="/">
           <Trans>Home</Trans>
         </Link>
-        <Link to="/docs">
-          <Trans>Docs</Trans>
-        </Link>
         <Link to="/store">
-          <Trans>Store</Trans>
+          <Trans>Store Examples</Trans>
         </Link>
       </Content>
     </Navbar>

@@ -6,7 +6,6 @@ import styled from 'styled-components';
 const StoreContainer = styled.div`
   display: flex;
   padding: 2rem;
-  flex-direction: column;
   align-items: center;
 `;
 
@@ -24,19 +23,33 @@ const Store = ({ currentValue, ping, search, results, isLoading }) => {
   return (
     <StoreContainer>
       <div>
-        <Trans>
-          Current value: <b>{currentValue}</b>
-        </Trans>
+        <div role="presentation" onClick={() => setCurrentTab('ping')}>
+          <Trans>Ping Example</Trans>
+        </div>
+        <div role="presentation" onClick={() => setCurrentTab('api')}>
+          <Trans>API Call Example</Trans>
+        </div>
       </div>
-      <Button type="button" onClick={ping} style={{ marginTop: '1rem' }}>
-        PING
-      </Button>
-      <Button disabled={isLoading} type="button" onClick={() => search(3)} style={{ marginTop: '1rem' }}>
-        {isLoading ? 'Loading' : 'Search 3 random users'}
-      </Button>
-      <code>
-        <pre>{JSON.stringify(results, null, 2)}</pre>
-      </code>
+      {currentTab === 'ping' && (
+        <div>
+          <Trans>
+            Current value: <b>{currentValue}</b>
+          </Trans>
+          <Button type="button" onClick={ping} style={{ marginTop: '1rem' }}>
+            PING
+          </Button>
+        </div>
+      )}
+      {currentTab === 'api' && (
+        <div>
+          <Button disabled={isLoading} type="button" onClick={() => search(3)} style={{ marginTop: '1rem' }}>
+            {isLoading ? 'Loading' : 'Search 3 random users'}
+          </Button>
+          <code>
+            <pre>{JSON.stringify(results, null, 2)}</pre>
+          </code>
+        </div>
+      )}
     </StoreContainer>
   );
 };
@@ -44,6 +57,9 @@ const Store = ({ currentValue, ping, search, results, isLoading }) => {
 Store.propTypes = {
   currentValue: PropTypes.string.isRequired,
   ping: PropTypes.func.isRequired,
+  search: PropTypes.func.isRequired,
+  results: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default Store;

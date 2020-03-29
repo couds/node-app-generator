@@ -13,12 +13,18 @@ const IconContainer = styled.span`
   width: ${({ size }) => sizes[size] || '1.5rem'};
   height: ${({ size }) => sizes[size] || '1.5rem'};
   fill: ${({ theme, color }) => theme.color[color] || ''};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  svg {
+    flex: 1;
+  }
 `;
 
 const Icon = ({ name, ...props }) => {
   const [svg, setSvg] = useState('');
   useEffect(() => {
-    import(`./svgs/${name}.svg`)
+    import(`./svgs/${name}.svg?icon=1`)
       .then((text) => setSvg(text.default))
       .catch((err) => console.error(`Icon ${name} not found`, err));
   }, [name]);
