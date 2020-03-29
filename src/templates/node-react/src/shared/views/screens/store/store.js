@@ -6,7 +6,28 @@ import styled from 'styled-components';
 const StoreContainer = styled.div`
   display: flex;
   padding: 2rem;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
+`;
+
+const Tabs = styled.nav`
+  display: flex;
+  justify-content: stretch;
+  width: 100%;
+
+  > div {
+    padding: 1rem;
+    border-bottom: 1px solid ${(props) => props.theme.color.link};
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    flex: 1;
+    &.is-active,
+    &:hover {
+      border-bottom-width: 2px;
+      color: ${(props) => props.theme.color.link};
+    }
+  }
 `;
 
 const Button = styled.button`
@@ -22,22 +43,20 @@ const Store = ({ currentValue, ping, search, results, isLoading }) => {
   const [currentTab, setCurrentTab] = useState('ping');
   return (
     <StoreContainer>
-      <div>
-        <div role="presentation" onClick={() => setCurrentTab('ping')}>
+      <Tabs>
+        <div role="presentation" className={currentTab === 'ping' ? 'is-active' : ''} onClick={() => setCurrentTab('ping')}>
           <Trans>Ping Example</Trans>
         </div>
-        <div role="presentation" onClick={() => setCurrentTab('api')}>
+        <div role="presentation" className={currentTab === 'api' ? 'is-active' : ''} onClick={() => setCurrentTab('api')}>
           <Trans>API Call Example</Trans>
         </div>
-      </div>
+      </Tabs>
       {currentTab === 'ping' && (
         <div>
-          <Trans>
-            Current value: <b>{currentValue}</b>
-          </Trans>
           <Button type="button" onClick={ping} style={{ marginTop: '1rem' }}>
             PING
           </Button>
+          <h1>{currentValue}</h1>
         </div>
       )}
       {currentTab === 'api' && (
@@ -45,9 +64,17 @@ const Store = ({ currentValue, ping, search, results, isLoading }) => {
           <Button disabled={isLoading} type="button" onClick={() => search(3)} style={{ marginTop: '1rem' }}>
             {isLoading ? 'Loading' : 'Search 3 random users'}
           </Button>
-          <code>
-            <pre>{JSON.stringify(results, null, 2)}</pre>
-          </code>
+          {results.map((user) => (
+            <div key={user.login.uuid}>
+              <img src={user.picture.medium} alt="avatar" />
+              <div>
+                {user.name.title}
+                {user.name.first}
+                {user.name.last}
+                {user.email}
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </StoreContainer>

@@ -19,7 +19,7 @@ export default {
     // Context have the initial action
     success: (state, { payload /* context */ }) => ({
       ...state,
-      searchResult: payload,
+      searchResult: payload.results,
     }),
   }),
 };

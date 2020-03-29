@@ -14,9 +14,7 @@ module.exports = (options) => {
       __filename: false,
       __dirname: false,
     },
-    plugins: [
-      new webpack.optimize.LimitChunkCountPlugin({ maxChunks:1 })
-    ],
+    plugins: [].concat(isProduction ? [new webpack.optimize.LimitChunkCountPlugin({ maxChunks:1 })] : []),
     output: {
       filename: '[name].js',
       publicPath: options.cdn,

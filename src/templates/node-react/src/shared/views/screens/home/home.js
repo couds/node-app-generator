@@ -38,10 +38,8 @@ const Home = () => {
       <GlobalStyle />
       <Logo alt="logo" src={logoSrc} />
       <h2>
-        <Trans>
-          This is a template/boilerplate <Icon name="logo" color="primary" /> for app&apos;s that use React for all out there that didn&apos;t like
-          all the magic made by RCA
-        </Trans>
+        <Icon name="logo" color="primary" />
+        <Trans>This is a template/boilerplate for app&apos;s that use React for all out there that didn&apos;t like all the magic made by RCA</Trans>
       </h2>
     </Container>
   );

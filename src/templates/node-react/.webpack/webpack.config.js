@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const { createVariants } = require('parallel-webpack');
 const fs = require('fs');
 const merge = require('webpack-merge');
+const TerserPlugin = require('terser-webpack-plugin');
  
 const clientConfig = require('./webpack.client.config');
 const serverConfig = require('./webpack.server.config');
@@ -23,14 +24,17 @@ const baseConfig = (options) => ({
   devtool: isProduction ? 'source-maps' : 'eval-cheap-module-source-map',
   cache: true,
   watchOptions: {
-    poll: 1000,
+    poll: 250,
     ignored: [
       /node_modules/,
     ],
   },
   plugins: [
+    new webpack.LoaderOptionsPlugin({
+      minimize: isProduction,
+      debug: false,
+    }),
     new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.LoaderOptionsPlugin({
       minimize: isProduction,
       debug: false,
@@ -43,7 +47,7 @@ const baseConfig = (options) => ({
       'process.env.IS_SERVER': options.isServer,
       'process.env.LOCALES': JSON.stringify(process.env.LOCALES),
     }),
-  ],
+  ].concat(isProduction ? [new webpack.optimize.AggressiveMergingPlugin()] : []),
   module: {
     rules: [
       {
@@ -125,6 +129,36 @@ const baseConfig = (options) => ({
           name: `${options.basePath}/videos/[hash].[ext]`,
         },
       },
+    ],
+  },
+  optimization: {
+    minimize: isProduction,
+    minimizer: [
+      // This is only used in production mode
+      new TerserPlugin({
+        terserOptions: {
+          parse: {
+            ecma: 8,
+          },
+          compress: {
+            ecma: 5,
+            warnings: false,
+            comparisons: false,
+            inline: 2,
+          },
+          mangle: {
+            safari10: true,
+          },
+          output: {
+            ecma: 5,
+            comments: false,
+            ascii_only: true,
+          },
+        },
+        parallel: true,
+        cache: true,
+        sourceMap: isProduction,
+      }),
     ],
   },
   resolve: {

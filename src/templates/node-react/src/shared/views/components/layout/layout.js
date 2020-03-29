@@ -4,11 +4,14 @@ import styled from 'styled-components';
 import Link from 'views/components/link';
 import { Trans } from '@lingui/macro';
 
-const Content = styled.section`
+const Container = styled.div`
   width: 100%;
   max-width: 980px;
-  min-height: calc(100vh - 3rem);
   margin: auto;
+`;
+
+const Content = styled(Container)`
+  min-height: calc(100vh - 3rem);
 `;
 
 const Navbar = styled.nav`
@@ -24,7 +27,7 @@ const Navbar = styled.nav`
     text-decoration: none;
   }
 
-  ${Content} {
+  ${Container} {
     display: flex;
     justify-content: flex-end;
   }
@@ -33,14 +36,14 @@ const Navbar = styled.nav`
 const Layout = ({ children }) => (
   <>
     <Navbar>
-      <Content>
+      <Container>
         <Link to="/">
           <Trans>Home</Trans>
         </Link>
         <Link to="/store">
           <Trans>Store Examples</Trans>
         </Link>
-      </Content>
+      </Container>
     </Navbar>
     <Content>{children}</Content>
   </>

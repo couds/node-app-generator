@@ -8,7 +8,7 @@ export default {
   ping: (action$) =>
     action$.pipe(
       ofType(CONSTANTS.PING),
-      delay(2000),
+      delay(1000),
       map(() => actions.pong()),
     ),
   search: helpers.createRequestEpic(CONSTANTS.SEARCH, ({ payload }) => ({
