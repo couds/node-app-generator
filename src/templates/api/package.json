@@ -4,8 +4,8 @@
   "description": "proposal for a way to organize your api projects",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch",
+    "build": "webpack --config=.webpack/webpack.config.js",
+    "watch": "webpack --config=.webpack/webpack.config.js --watch",
     "build-image": "docker build -t ${DOCKER_REGISTRY}project__name__ .",
     "nodemon": "nodemon dist",
     "lint": "eslint . --fix"

@@ -107,7 +107,7 @@ const createRequestEpic = (type, params) => (action$, state$) => {
       const ajax$ = from(request).pipe(
         map((data) => actions.success(data.data, action)),
         catchError((error) => {
-          if (attempt < (requestData.retries || 10)) {
+          if (attempt < (Number.isInteger(requestData.retries) ? requestData.retries : 10)) {
             let waitFor = attempt * scalingDuration;
             if (waitFor > 60000) {
               waitFor = 60000;

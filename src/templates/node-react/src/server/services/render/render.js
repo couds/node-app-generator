@@ -2,14 +2,32 @@ import React from 'react';
 import useragent from 'useragent';
 import { renderToString } from 'react-dom/server';
 import { ServerStyleSheet } from 'styled-components';
+import acceptLanguage from 'accept-language';
 // eslint-disable-next-line import/named
-import { clean } from 'config';
+import config, { clean } from 'config';
+import favicon from 'assets/images/logo.png';
 
 import App from 'views/app';
 import createStore from 'flux/create-store';
 
+acceptLanguage.languages(config.locales.availables);
+
 const render = (req, res, next) => {
   res.render = (initialState) => {
+
+    const [, lang, ...rest] = req.url.split('/');
+    const fallback = acceptLanguage.get(req.header('accept-language'));
+    if (!lang) {
+      res.redirect(`/${fallback}`);
+      return;
+    }
+    if (!config.locales.availables.includes(lang)) {
+      const url = lang.length === 2 ? ['', fallback, ...rest].join('/') : `/${fallback}${req.url}`;
+      res.redirect(url);
+      return;
+    }
+    req.locale = lang;
+
     const basePath = process.env.ASSETS_PATH;
     const agent = useragent.lookup(req.headers['user-agent']);
     const isBot = agent.device.toJSON().family === 'Spider';
@@ -29,13 +47,40 @@ const render = (req, res, next) => {
       };
     }
 
+    const seo = req.seo || config.seo || { title: '', description: '', icon: favicon };
+
+    const fullUrl = `//${req.hostname}${req.originalUrl}`;
+
     res.send(
       `
       <!DOCTYPE html>
       <html>
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-          <link rel="icon" href="https://reactjs.org/favicon.ico">
+
+          <title>${seo.title}</title>
+          <link rel="icon" href=""${seo.icon}">
+          <meta name=description content="${seo.description}" />
+          <meta property="og:title" content="${seo.title}" />
+          <meta property="og:description" content="${seo.description}" />
+          <meta property="og:image" content="${seo.icon}"/>
+          <meta property="og:type" content="website" />
+          <meta property="og:locale" content="${req.locale}" />
+
+          ${config.locales.availables
+            .map((locale) => {
+              return `<link rel="alternate" href="${fullUrl.replace(`/${req.locale}`, `/${locale}`)}" hreflang="${locale}" />`;
+            })
+            .join('\n')}
+          
+          <meta itemprop="name" content="${seo.title}">
+          <meta itemprop="description" content="${seo.description}">
+          <meta itemprop="image" content="${seo.icon}">
+
+          <meta name="twitter:title" content="${seo.title}">
+          <meta name="twitter:description" content="${seo.description}">
+          <meta name="twitter:creator" content="@videotrackio">
+
           <link rel="preload" as="script" href="${basePath}/javascripts/vendors~index.bundle.js" />
           <link rel="preload" as="script" href="${basePath}/javascripts/index.bundle.js" />
           ${preRender.css}

@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const pkg = require('./package.json');
+const pkg = require('../package.json');
 
 const version = process.env.VERSION || `${pkg.version}-dev`;
 
@@ -12,7 +12,7 @@ module.exports = {
   devtool: isProduction ? 'source-maps' : 'cheap-eval-source-map',
   cache: true,
   entry: {
-    index: ['./src/index.js'],
+    index: [path.join(__dirname, '../src/index.js')],
   },
   target: 'node',
   context: __dirname,
@@ -22,14 +22,14 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    path: path.join(__dirname, 'dist/'),
+    path: path.join(__dirname, '../dist/'),
   },
   stats: {
     colors: false,
-    errorDetails: false,
+    all: false,
+    entrypoints: true,
     errors: true,
-    chunks: false,
-    chunkGroups: false,
+    timings: true,
   },
   watchOptions: {
     poll: 1000,
@@ -77,10 +77,15 @@ module.exports = {
         test: /\.ts$/,
         use: 'null-loader',
       },
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: 'javascript/auto',
+      },
     ],
   },
   resolve: {
-    modules: ['node_modules', path.resolve(__dirname, './src')],
+    modules: ['node_modules', path.resolve(__dirname, '../src')],
     extensions: ['.js'],
     alias: {},
   },

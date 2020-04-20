@@ -3,10 +3,10 @@ WORKDIR /code
 ADD package.json package.json
 ADD package-lock.json package-lock.json
 RUN npm ci --silent
+ADD src src
+ADD .webpack .webpack
 
 FROM base as builder
-ADD src src
-ADD webpack.config.js webpack.config.js
 ARG NODE_ENV=production
 ARG VERSION
 RUN npm run build
