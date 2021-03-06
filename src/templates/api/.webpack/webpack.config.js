@@ -9,7 +9,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
   bail: true,
   mode: isProduction ? 'production' : 'development',
-  devtool: isProduction ? 'source-maps' : 'cheap-eval-source-map',
+  devtool: isProduction ? 'source-map' : 'eval-cheap-source-map',
   cache: true,
   entry: {
     index: [path.join(__dirname, '../src/index.js')],
@@ -33,7 +33,7 @@ module.exports = {
   },
   watchOptions: {
     poll: 1000,
-    ignored: [/node_modules/],
+    ignored: ["node_modules/**"],
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
@@ -42,7 +42,6 @@ module.exports = {
       minimize: isProduction,
       debug: false,
     }),
-    new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.VERSION': JSON.stringify(version),

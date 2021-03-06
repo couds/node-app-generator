@@ -23,7 +23,6 @@ app.use((err, req, res, next) => {
   next();
 });
 
-
 app.listen(process.env.PORT || 3000, () => {
-  logger.info(`Listening on port ${process.env.PORT || 3000}`)
+  logger.info(`Listening on port ${process.env.PORT || 3000}`);
 });
