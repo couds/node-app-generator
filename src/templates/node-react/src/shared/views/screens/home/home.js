@@ -3,7 +3,6 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { Trans } from '@lingui/macro';
 
 import logoSrc from 'assets/images/logo.png';
-import Icon from 'views/components/icon/icon';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -32,17 +31,14 @@ const Logo = styled.img`
   animation: App-logo-spin infinite 20s linear;
 `;
 
-const Home = () => {
-  return (
-    <Container>
-      <GlobalStyle />
-      <Logo alt="logo" src={logoSrc} />
-      <h2>
-        <Icon name="logo" color="primary" />
-        <Trans>This is a template/boilerplate for app&apos;s that use React for all out there that didn&apos;t like all the magic made by RCA</Trans>
-      </h2>
-    </Container>
-  );
-};
+const Home = () => (
+  <Container>
+    <GlobalStyle />
+    <Logo alt="logo" src={logoSrc} />
+    <h2>
+      <Trans>This is a template/boilerplate for app&apos;s that use React for all out there that didn&apos;t like all the magic made by RCA</Trans>
+    </h2>
+  </Container>
+);
 
 export default Home;

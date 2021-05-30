@@ -1,32 +1,27 @@
 const path = require('path');
 const webpack = require('webpack');
-const { createVariants } = require('parallel-webpack');
 const fs = require('fs');
-const merge = require('webpack-merge');
-const TerserPlugin = require('terser-webpack-plugin');
- 
+const { merge } = require('webpack-merge');
+
 const clientConfig = require('./webpack.client.config');
 const serverConfig = require('./webpack.server.config');
 
 const pkg = require('../package.json');
 const version = process.env.VERSION || `dev`;
-process.env.LOCALES = fs.readdirSync(path.resolve(__dirname, '../src/shared/services/locales/messages')).filter((file) => file.length === 2).join(',');
+
+process.env.LOCALES = fs.readdirSync(path.resolve(__dirname, '../src/shared/services/locales')).filter((file) => file.length === 2).join(',');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-const variants = {
-  isServer: [false, true],
-};
-
 const baseConfig = (options) => ({
-  bail: true,
+  bail: isProduction,
   mode: isProduction ? 'production' : 'development',
-  devtool: isProduction ? 'source-maps' : 'eval-cheap-module-source-map',
+  devtool: isProduction ? 'source-map' : 'eval-cheap-module-source-map',
   cache: true,
   watchOptions: {
     poll: 250,
     ignored: [
-      /node_modules/,
+      "node_modules/**",
     ],
   },
   plugins: [
@@ -34,12 +29,10 @@ const baseConfig = (options) => ({
       minimize: isProduction,
       debug: false,
     }),
-    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.LoaderOptionsPlugin({
       minimize: isProduction,
       debug: false,
     }),
-    new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.VERSION': JSON.stringify(process.env.VERSION),
@@ -91,26 +84,7 @@ const baseConfig = (options) => ({
         },
       },
       {
-        test: /\.svg$/,
-        use: [{
-          loader: 'svg-inline-loader',
-          options: {
-            removeSVGTagAttrs: false,
-          },
-        }, {
-          loader: 'svgo-loader',
-					options: {
-						plugins: [
-							{ removeTitle: true },
-							{ convertColors: { shorthex: false } },
-              { convertPathData: false },
-              { removeDimensions: true }
-						],
-					},
-        }]
-      },
-      {
-        test: /\.(jpe?g|png|gif|webp)$/,
+        test: /\.(jpe?g|png|gif|webp|svg)$/,
         use:[{
           loader: 'file-loader',
           options: {
@@ -152,4 +126,7 @@ const createConfig = ({ isServer }) => {
   return merge(baseConfig(options), isServer ? serverConfig(options) : clientConfig(options));
 };
 
-module.exports = createVariants({}, variants, createConfig);
+module.exports = [
+  createConfig({ isServer: false }),
+  createConfig({ isServer: true })
+];

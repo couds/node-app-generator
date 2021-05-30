@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2020-02-06 16:34+0100\n"
+"POT-Creation-Date: 2021-05-02 12:35+0200\n"
 "Mime-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,18 +13,26 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/shared/views/components/layout/layout.js:38
-msgid "Docs"
-msgstr "Docs"
+#: src/shared/views/screens/store/store.js:65
+msgid "API Call Example"
+msgstr "API Call Example"
 
-#: src/shared/views/components/layout/layout.js:37
+#: src/shared/views/components/layout/layout.js:41
 msgid "Home"
 msgstr "Home"
 
-#: src/shared/views/components/loader/loader.js:19
+#: src/shared/views/components/loader/loader.js:18
 msgid "Loading..."
 msgstr "Loading..."
 
-#: src/shared/views/screens/home/home.js:19
+#: src/shared/views/screens/store/store.js:62
+msgid "Ping Example"
+msgstr "Ping Example"
+
+#: src/shared/views/components/layout/layout.js:44
+msgid "Store Examples"
+msgstr "Store Examples"
+
+#: src/shared/views/screens/home/home.js:41
 msgid "This is a template/boilerplate for app's that use React for all out there that didn't like all the magic made by RCA"
 msgstr "This is a template/boilerplate for app's that use React for all out there that didn't like all the magic made by RCA"

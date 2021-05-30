@@ -145,12 +145,10 @@ const createStore = (storeObject, initialState = {}) => {
   const epicMiddleware = createEpicMiddleware();
 
   const reducers = Object.entries(storeObject).reduce(
-    (acc, [field, storeObj]) => {
-      return {
-        ...acc,
-        ...(storeObj.reducers && { [field]: createReducer(storeObj.reducers, storeObj.INITIAL_STATE || {}) }),
-      };
-    },
+    (acc, [field, storeObj]) => ({
+      ...acc,
+      ...(storeObj.reducers && { [field]: createReducer(storeObj.reducers, storeObj.INITIAL_STATE || {}) }),
+    }),
     {
       router: connectRouter(history),
     },
@@ -166,9 +164,7 @@ const createStore = (storeObject, initialState = {}) => {
     ),
   );
 
-  const epics = Object.values(storeObject).reduce((acc, storeObj) => {
-    return acc.concat(storeObj.epics ? Object.values(storeObj.epics) : []);
-  }, []);
+  const epics = Object.values(storeObject).reduce((acc, storeObj) => acc.concat(storeObj.epics ? Object.values(storeObj.epics) : []), []);
   epicMiddleware.run(combineEpics(...epics));
 
   return store;

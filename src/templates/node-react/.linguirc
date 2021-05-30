@@ -1,7 +1,10 @@
 {
-   "localeDir": "src/shared/services/locales/messages/",
-   "srcPathDirs": ["src/"],
-   "format": "po",
-   "fallbackLocale": "en",
+   "locales": ["en", "es"],
    "sourceLocale": "en",
+   "catalogs": [{
+      "path": "src/shared/services/locales/{locale}/messages",
+      "include": ["<rootDir>/src"],
+      "exclude": ["**/node_modules"]
+   }],
+   "format": "po"
 }

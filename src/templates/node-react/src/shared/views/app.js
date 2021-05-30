@@ -32,11 +32,11 @@ const theme = {
   },
 };
 
-const App = ({ catalogs, locale, store, ...props }) => (
+const App = ({ messages, locale, store, ...props }) => (
   <Provider store={store}>
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Localization catalogs={catalogs} locale={locale}>
+      <Localization messages={messages} locale={locale}>
         <Router {...props}>
           <Layout>
             <Suspense fallback={<Loader key="lazy-loader" />}>
@@ -53,13 +53,13 @@ const App = ({ catalogs, locale, store, ...props }) => (
 );
 
 App.propTypes = {
-  catalogs: PropTypes.shape({}),
+  messages: PropTypes.shape({}),
   locale: PropTypes.string,
   store: PropTypes.object.isRequired,
 };
 
 App.defaultProps = {
-  catalogs: undefined,
+  messages: undefined,
   locale: 'en',
 };
 

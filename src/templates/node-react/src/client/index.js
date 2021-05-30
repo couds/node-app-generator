@@ -9,7 +9,6 @@ const store = createStore(window.__INITIAL_STATE__);
 
 try {
   const serverState = document.querySelector('#hf-initial-state');
-
   if (serverState) {
     serverState.parentNode.removeChild(serverState);
   }
@@ -22,7 +21,7 @@ function boot() {
     if (!isBot) {
       render(<App locale={window.__LOCALE__} store={store} />, document.getElementById('react-app'));
     } else {
-      import(`services/locales/messages/${window.__LOCALE__}/messages`).then((langData) => {
+      import(`services/locales/${window.__LOCALE__}/messages`).then((langData) => {
         const catalogs = {
           [window.__LOCALE__]: langData.default,
         };

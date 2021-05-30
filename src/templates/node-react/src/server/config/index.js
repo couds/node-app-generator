@@ -5,7 +5,7 @@ const config = {
   seo: {
     title: 'project__name__',
     description: '',
-  }
+  },
 };
 
 export const clean = () => ({

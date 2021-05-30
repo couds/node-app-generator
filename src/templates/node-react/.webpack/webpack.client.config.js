@@ -28,10 +28,6 @@ module.exports = (options) => {
     },
     plugins,
     optimization: {
-      splitChunks: {
-        chunks: 'all',
-        minSize: 100000,
-      },
       minimize: isProduction,
       minimizer: [
         // This is only used in production mode
@@ -56,8 +52,7 @@ module.exports = (options) => {
             },
           },
           parallel: true,
-          cache: true,
-          sourceMap: isProduction,
+          extractComments: true,
         }),
       ],
     },

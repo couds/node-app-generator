@@ -1,15 +1,15 @@
 import express from 'express';
 import path from 'path';
 import morgan from 'morgan';
-
+import acceptLanguage from 'accept-language';
 import config from 'config';
-
 import logger from 'services/logger';
 
 // not isomorphic modules return  eslint error
 /* eslint-disable-next-line import/no-unresolved */
 import render from 'services/render';
 
+acceptLanguage.languages(config.locales.availables);
 
 const app = express();
 
@@ -21,8 +21,18 @@ app.use(morgan('dev'));
 
 app.use(render);
 
-app.get('*', (req, res) => {
+app.use(`/:lang(${config.locales.availables.join('|')})/`, (req, res) => {
+  const { lang } = req.params;
+  req.locale = lang;
   res.render();
+});
+
+app.get('*', (req, res) => {
+  const fallback = acceptLanguage.get(req.header('accept-language'));
+  const [, lang] = req.url.split('/');
+
+  const url = (lang || '').length === 2 ? req.path.replace(lang, fallback) : `/${fallback}${req.url}`;
+  res.redirect(url);
 });
 
 app.use((err, req, res, next) => {
