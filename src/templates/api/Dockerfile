@@ -12,7 +12,6 @@ ARG VERSION
 RUN npm run build
 
 FROM node:12-alpine
-RUN npm i -g nodemon
 WORKDIR /code
 COPY --from=builder /code/dist/ .
 ENV PORT 80
