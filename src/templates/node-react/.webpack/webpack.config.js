@@ -40,7 +40,7 @@ const baseConfig = (options) => ({
       'process.env.IS_SERVER': options.isServer,
       'process.env.LOCALES': JSON.stringify(process.env.LOCALES),
     }),
-  ].concat(isProduction ? [new webpack.optimize.AggressiveMergingPlugin()] : []),
+  ],
   module: {
     rules: [
       {

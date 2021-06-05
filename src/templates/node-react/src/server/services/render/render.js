@@ -30,7 +30,7 @@ const render = (req, res, next) => {
 
     const seo = req.seo || config.seo || { title: '', description: '', icon: favicon };
 
-    const fullUrl = `//${req.hostname}${req.originalUrl}`;
+    const fullUrl = `${req.protocol}//${req.hostname}${req.originalUrl}`;
 
     res.send(
       `

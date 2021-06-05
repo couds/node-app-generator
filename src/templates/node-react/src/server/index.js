@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import acceptLanguage from 'accept-language';
 import config from 'config';
 import logger from 'services/logger';
+import url from 'url';
 
 // not isomorphic modules return  eslint error
 /* eslint-disable-next-line import/no-unresolved */
@@ -17,6 +18,15 @@ app.set('trust proxy', true);
 app.disable('x-powered-by');
 
 app.use('/public', express.static(path.join(__dirname, '..', 'public/')));
+
+app.use((req, res, next) => {
+  if (!url.parse(req.url).pathname.endsWith('/')) {
+    res.redirect(`${req.url}/`);
+    return;
+  }
+  next();
+});
+
 app.use(morgan('dev'));
 
 app.use(render);
@@ -31,8 +41,8 @@ app.get('*', (req, res) => {
   const fallback = acceptLanguage.get(req.header('accept-language'));
   const [, lang] = req.url.split('/');
 
-  const url = (lang || '').length === 2 ? req.path.replace(lang, fallback) : `/${fallback}${req.url}`;
-  res.redirect(url);
+  const redirect = (lang || '').length === 2 ? req.path.replace(lang, fallback) : `/${fallback}${req.url}`;
+  res.redirect(redirect);
 });
 
 app.use((err, req, res, next) => {

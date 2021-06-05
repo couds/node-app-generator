@@ -18,7 +18,7 @@ module.exports = (options) => {
 
   return {
     entry: {
-      index: ['./src/client/index.js'],
+      index: ['regenerator-runtime/runtime', './src/client/index.js'],
     },
     output: {
       path: path.join(__dirname, '../dist/public/'),
