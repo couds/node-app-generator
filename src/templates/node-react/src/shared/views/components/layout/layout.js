@@ -33,21 +33,23 @@ const Navbar = styled.nav`
   }
 `;
 
-const Layout = ({ children }) => (
-  <>
-    <Navbar>
-      <Container>
-        <Link to="/">
-          <Trans>Home</Trans>
-        </Link>
-        <Link to="/store">
-          <Trans>Store Examples</Trans>
-        </Link>
-      </Container>
-    </Navbar>
-    <Content>{children}</Content>
-  </>
-);
+const Layout = ({ children }) => {
+  return (
+    <>
+      <Navbar>
+        <Container>
+          <Link to="/">
+            <Trans>Home</Trans>
+          </Link>
+          <Link to="/store">
+            <Trans>Store Examples</Trans>
+          </Link>
+        </Container>
+      </Navbar>
+      <Content>{children}</Content>
+    </>
+  );
+};
 
 Layout.propTypes = {
   children: PropTypes.node,

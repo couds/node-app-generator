@@ -13,10 +13,12 @@ const LoaderContainer = styled.div`
   justify-content: center;
 `;
 
-const Loader = () => (
-  <LoaderContainer>
-    <Trans>Loading...</Trans>
-  </LoaderContainer>
-);
+const Loader = () => {
+  return (
+    <LoaderContainer>
+      <Trans>Loading...</Trans>
+    </LoaderContainer>
+  );
+};
 
 export default Loader;

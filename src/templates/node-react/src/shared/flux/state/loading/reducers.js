@@ -5,27 +5,34 @@ const initialLoading = { loading: false, progress: undefined };
 
 export const INITIAL_STATE = {};
 
-const loadingHelper = (type) =>
-  helpers.createRequestEpicHandler(type, {
-    start: (state) => ({
-      ...state,
-      [type]: {
-        progress: 0,
-        loading: true,
-      },
-    }),
-    progress: (state, { context }) => ({
-      ...state,
-      [type]: {
-        progress: context,
-        loading: true,
-      },
-    }),
-    finish: (state) => ({
-      ...state,
-      [type]: initialLoading,
-    }),
+const loadingHelper = (type) => {
+  return helpers.createRequestEpicHandler(type, {
+    start: (state) => {
+      return {
+        ...state,
+        [type]: {
+          progress: 0,
+          loading: true,
+        },
+      };
+    },
+    progress: (state, { context }) => {
+      return {
+        ...state,
+        [type]: {
+          progress: context,
+          loading: true,
+        },
+      };
+    },
+    finish: (state) => {
+      return {
+        ...state,
+        [type]: initialLoading,
+      };
+    },
   });
+};
 
 export default {
   ...loadingHelper(DUMMY_CONSTANTS.SEARCH),

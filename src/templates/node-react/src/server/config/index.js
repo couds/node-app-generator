@@ -8,8 +8,10 @@ const config = {
   },
 };
 
-export const clean = () => ({
-  ...config,
-});
+export const clean = () => {
+  return {
+    ...config,
+  };
+};
 
 export default config;

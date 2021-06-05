@@ -32,25 +32,27 @@ const theme = {
   },
 };
 
-const App = ({ messages, locale, store, ...props }) => (
-  <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Localization messages={messages} locale={locale}>
-        <Router {...props}>
-          <Layout>
-            <Suspense fallback={<Loader key="lazy-loader" />}>
-              <Switch>
-                <Route component={Home} path="/:lang" exact />
-                <Route component={Store} path="/:lang/store" exact />
-              </Switch>
-            </Suspense>
-          </Layout>
-        </Router>
-      </Localization>
-    </ThemeProvider>
-  </Provider>
-);
+const App = ({ locale, store, ...props }) => {
+  return (
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Localization locale={locale}>
+          <Router {...props}>
+            <Layout>
+              <Suspense fallback={<Loader key="lazy-loader" />}>
+                <Switch>
+                  <Route component={Home} path="/:lang" exact />
+                  <Route component={Store} path="/:lang/store" exact />
+                </Switch>
+              </Suspense>
+            </Layout>
+          </Router>
+        </Localization>
+      </ThemeProvider>
+    </Provider>
+  );
+};
 
 App.propTypes = {
   messages: PropTypes.shape({}),

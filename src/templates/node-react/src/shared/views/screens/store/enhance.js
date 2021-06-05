@@ -5,11 +5,13 @@ import loading from 'flux/state/loading';
 
 export default compose(
   connect(
-    (state) => ({
-      currentValue: dummy.selectors.getCurrent(state),
-      results: dummy.selectors.getSearch(state),
-      isLoading: loading.selectors.isLoading(state, dummy.CONSTANTS.SEARCH),
-    }),
+    (state) => {
+      return {
+        currentValue: dummy.selectors.getCurrent(state),
+        results: dummy.selectors.getSearch(state),
+        isLoading: loading.selectors.isLoading(state, dummy.CONSTANTS.SEARCH),
+      };
+    },
     {
       ping: dummy.actions.ping,
       search: dummy.actions.search,

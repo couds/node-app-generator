@@ -5,14 +5,19 @@ import CONSTANTS from './constants';
 import actions from './actions';
 
 export default {
-  ping: (action$) =>
-    action$.pipe(
+  ping: (action$) => {
+    return action$.pipe(
       ofType(CONSTANTS.PING),
       delay(1000),
-      map(() => actions.pong()),
-    ),
-  search: helpers.createRequestEpic(CONSTANTS.SEARCH, ({ payload }) => ({
-    url: `https://randomuser.me/api/?results=${parseInt(payload.total, 10)}`,
-    method: 'get',
-  })),
+      map(() => {
+        return actions.pong();
+      }),
+    );
+  },
+  search: helpers.createRequestEpic(CONSTANTS.SEARCH, ({ payload }) => {
+    return {
+      url: `https://randomuser.me/api/?results=${parseInt(payload.total, 10)}`,
+      method: 'get',
+    };
+  }),
 };

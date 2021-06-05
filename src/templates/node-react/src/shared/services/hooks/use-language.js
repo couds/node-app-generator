@@ -3,12 +3,21 @@ import PropTypes from 'prop-types';
 import { I18nProvider } from '@lingui/react';
 import { i18n } from '@lingui/core';
 
+export { i18n };
+
 const LocalizationContext = createContext();
 
-export const Localization = ({ children, locale, messages }) => {
-  const [localeData, setLocaleData] = useState({
-    ...(locale && messages && { [locale]: messages }),
+export const loadLocale = (locale) => {
+  return Promise.all([import(`services/locales/${locale}/messages`), import('make-plural/plurals')]).then(([data, plurals]) => {
+    i18n.load(locale, data.messages);
+    i18n.loadLocaleData(locale, { plurals: plurals[locale] });
+    i18n.activate(locale);
+    return { data, plurals };
   });
+};
+
+export const Localization = ({ children, locale }) => {
+  const [localeData, setLocaleData] = useState({});
 
   useEffect(() => {
     if (localeData[locale]) {
@@ -16,19 +25,15 @@ export const Localization = ({ children, locale, messages }) => {
       i18n.activate(locale);
       return;
     }
-    import(`services/locales/${locale}/messages`).then((data) => {
-      i18n.load(locale, data.messages);
-      i18n.activate(locale);
-      setLocaleData((currentData) => ({
-        ...currentData,
-        [locale]: data,
-      }));
+    loadLocale(locale).then(({ data }) => {
+      setLocaleData((currentData) => {
+        return {
+          ...currentData,
+          [locale]: data,
+        };
+      });
     });
   }, [locale, localeData]);
-
-  if (!localeData[locale]) {
-    return null;
-  }
 
   return (
     <LocalizationContext.Provider value={{ locale }}>
@@ -39,13 +44,13 @@ export const Localization = ({ children, locale, messages }) => {
 
 Localization.propTypes = {
   children: PropTypes.node.isRequired,
-  messages: PropTypes.object,
   locale: PropTypes.string,
 };
 
 Localization.defaultProps = {
   locale: 'en',
-  messages: undefined,
 };
 
-export default () => useContext(LocalizationContext);
+export default () => {
+  return useContext(LocalizationContext);
+};

@@ -6,28 +6,24 @@ import { ServerStyleSheet } from 'styled-components';
 import config, { clean } from 'config';
 import favicon from 'assets/images/logo.png';
 import App from 'views/app';
-import { i18n } from '@lingui/core';
 import createStore from 'flux/create-store';
+import { loadLocale } from 'services/hooks/use-language';
 
 const render = (req, res, next) => {
-  res.render = (initialState) => {
+  res.render = async (initialState) => {
     const basePath = process.env.ASSETS_PATH;
     const agent = useragent.lookup(req.headers['user-agent']);
     const isBot = agent.device.toJSON().family === 'Spider' || req.query.isbot;
     const store = createStore(initialState);
 
-    // eslint-disable-next-line import/no-dynamic-require
-    const messages = require(`services/locales/${req.locale}/messages`);
-
-    i18n.load(req.locale, messages);
-    i18n.activate(req.locale);
+    await loadLocale(req.locale);
 
     let preRender = { html: '', css: '' };
 
     if (isBot) {
       const sheet = new ServerStyleSheet();
       preRender = {
-        html: renderToString(sheet.collectStyles(<App lang={req.locale} messages={messages} location={req.originalUrl} store={store} />)),
+        html: renderToString(sheet.collectStyles(<App locale={req.locale} location={req.originalUrl} store={store} />)),
         css: sheet.getStyleTags(),
       };
     }
@@ -53,7 +49,9 @@ const render = (req, res, next) => {
           <meta property="og:locale" content="${req.locale}" />
 
           ${config.locales.availables
-            .map((locale) => `<link rel="alternate" href="${fullUrl.replace(`/${req.locale}`, `/${locale}`)}" hreflang="${locale}" />`)
+            .map((locale) => {
+              return `<link rel="alternate" href="${fullUrl.replace(`/${req.locale}`, `/${locale}`)}" hreflang="${locale}" />`;
+            })
             .join('\n')}
 
           <meta itemprop="name" content="${seo.title}">

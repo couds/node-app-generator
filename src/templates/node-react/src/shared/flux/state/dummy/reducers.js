@@ -7,19 +7,25 @@ export const INITIAL_STATE = {
 };
 
 export default {
-  [CONSTANTS.PING]: (state) => ({
-    ...state,
-    current: 'ping',
-  }),
-  [CONSTANTS.PONG]: (state) => ({
-    ...state,
-    current: 'pong',
-  }),
+  [CONSTANTS.PING]: (state) => {
+    return {
+      ...state,
+      current: 'ping',
+    };
+  },
+  [CONSTANTS.PONG]: (state) => {
+    return {
+      ...state,
+      current: 'pong',
+    };
+  },
   ...helpers.createRequestEpicHandler(CONSTANTS.SEARCH, {
     // Context have the initial action
-    success: (state, { payload /* context */ }) => ({
-      ...state,
-      searchResult: payload.results,
-    }),
+    success: (state, { payload /* context */ }) => {
+      return {
+        ...state,
+        searchResult: payload.results,
+      };
+    },
   }),
 };

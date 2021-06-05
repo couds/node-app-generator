@@ -1,7 +1,13 @@
 import CONSTANTS from './constants';
 
 export default {
-  ping: () => ({ type: CONSTANTS.PING }),
-  pong: () => ({ type: CONSTANTS.PONG }),
-  search: (total) => ({ type: CONSTANTS.SEARCH, payload: { total } }),
+  ping: () => {
+    return { type: CONSTANTS.PING };
+  },
+  pong: () => {
+    return { type: CONSTANTS.PONG };
+  },
+  search: (total) => {
+    return { type: CONSTANTS.SEARCH, payload: { total } };
+  },
 };

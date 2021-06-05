@@ -17,7 +17,10 @@ const Tabs = styled.nav`
 
   > div {
     padding: 1rem;
-    border-bottom: 1px solid ${(props) => props.theme.color.link};
+    border-bottom: 1px solid
+      ${(props) => {
+        return props.theme.color.link;
+      }};
     text-align: center;
     cursor: pointer;
     font-weight: bold;
@@ -25,18 +28,25 @@ const Tabs = styled.nav`
     &.is-active,
     &:hover {
       border-bottom-width: 2px;
-      color: ${(props) => props.theme.color.link};
+      color: ${(props) => {
+        return props.theme.color.link;
+      }};
     }
   }
 `;
 
 const Button = styled.button`
   padding: 0.25rem 1rem;
-  background: ${({ color, theme }) => theme.color[color] || 'white'};
+  background: ${({ color, theme }) => {
+    return theme.color[color] || 'white';
+  }};
   line-height: 1.5rem;
   border-radius: 1.5rem;
   outline: none;
-  border: 1px solid ${({ color, theme }) => theme.color[`${color}-reverse`] || 'white'};
+  border: 1px solid
+    ${({ color, theme }) => {
+      return theme.color[`${color}-reverse`] || 'white';
+    }};
 `;
 
 const UserContainer = styled.div`
@@ -58,10 +68,22 @@ const Store = ({ currentValue, ping, search, results, isLoading }) => {
   return (
     <StoreContainer>
       <Tabs>
-        <div role="presentation" className={currentTab === 'ping' ? 'is-active' : ''} onClick={() => setCurrentTab('ping')}>
+        <div
+          role="presentation"
+          className={currentTab === 'ping' ? 'is-active' : ''}
+          onClick={() => {
+            return setCurrentTab('ping');
+          }}
+        >
           <Trans>Ping Example</Trans>
         </div>
-        <div role="presentation" className={currentTab === 'api' ? 'is-active' : ''} onClick={() => setCurrentTab('api')}>
+        <div
+          role="presentation"
+          className={currentTab === 'api' ? 'is-active' : ''}
+          onClick={() => {
+            return setCurrentTab('api');
+          }}
+        >
           <Trans>API Call Example</Trans>
         </div>
       </Tabs>
@@ -75,20 +97,29 @@ const Store = ({ currentValue, ping, search, results, isLoading }) => {
       )}
       {currentTab === 'api' && (
         <div style={{ width: '100%' }}>
-          <Button disabled={isLoading} type="button" onClick={() => search(3)} style={{ marginTop: '1rem', marginBottom: '1rem', width: '100%' }}>
+          <Button
+            disabled={isLoading}
+            type="button"
+            onClick={() => {
+              return search(3);
+            }}
+            style={{ marginTop: '1rem', marginBottom: '1rem', width: '100%' }}
+          >
             {isLoading ? 'Loading' : 'Search 3 random users'}
           </Button>
-          {results.map((user) => (
-            <UserContainer key={user.login.uuid}>
-              <img src={user.picture.medium} alt="avatar" />
-              <div className="content">
-                <div>
-                  {user.name.title} {user.name.first} {user.name.last}
+          {results.map((user) => {
+            return (
+              <UserContainer key={user.login.uuid}>
+                <img src={user.picture.medium} alt="avatar" />
+                <div className="content">
+                  <div>
+                    {user.name.title} {user.name.first} {user.name.last}
+                  </div>
+                  <div>{user.email}</div>
                 </div>
-                <div>{user.email}</div>
-              </div>
-            </UserContainer>
-          ))}
+              </UserContainer>
+            );
+          })}
         </div>
       )}
     </StoreContainer>
