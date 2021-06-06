@@ -32,6 +32,8 @@ const render = (req, res, next) => {
 
     const fullUrl = `${req.protocol}//${req.hostname}${req.originalUrl}`;
 
+    const scrips = ['framework.bundle.js', 'commons.bundle.js', 'index.bundle.js'];
+
     res.send(
       `
       <!DOCTYPE html>
@@ -60,9 +62,12 @@ const render = (req, res, next) => {
 
           <meta name="twitter:title" content="${seo.title}">
           <meta name="twitter:description" content="${seo.description}">
-          <meta name="twitter:creator" content="@videotrackio">
-
-          <link rel="preload" as="script" href="${basePath}/javascripts/index.bundle.js" />
+          <meta name="twitter:creator" content=${seo.twitter}">
+          ${scrips
+            .map((script) => {
+              return `<link rel="preload" as="script" href="${basePath}/javascripts/${script}" />`;
+            })
+            .join('')}
           ${preRender.css}
         </head>
         <body>
@@ -73,7 +78,15 @@ const render = (req, res, next) => {
           window.__LOCALE__ = ${JSON.stringify(req.locale)};
           window.__CONFIG__ = ${JSON.stringify(clean())};
         </script>
-       ${!isBot ? `<script src="${basePath}/javascripts/index.bundle.js" ></script>` : ''}
+       ${
+         !isBot
+           ? scrips
+               .map((script) => {
+                 return `<script src="${basePath}/javascripts/${script}" ></script>`;
+               })
+               .join('')
+           : ''
+       }
         </body>
       </html>
       `.trim(),

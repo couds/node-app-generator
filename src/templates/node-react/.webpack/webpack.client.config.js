@@ -1,18 +1,15 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-require("@babel/register");
-const getConfig = require('../src/server/config').clean;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const crypto = require('crypto');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = (options) => {
   const plugins = [
-    new HtmlWebpackPlugin({
-        hash: false,
-        config: JSON.stringify(getConfig()),
-        template: path.join(__dirname, 'template.html'),
-        filename: path.join(__dirname, '../dist/index.html'),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'disabled'
     }),
   ];
 
@@ -28,6 +25,7 @@ module.exports = (options) => {
     },
     plugins,
     optimization: {
+      mergeDuplicateChunks: true,
       minimize: isProduction,
       minimizer: [
         // This is only used in production mode
@@ -47,6 +45,7 @@ module.exports = (options) => {
             },
             output: {
               ecma: 5,
+              safari10: true,
               comments: false,
               ascii_only: true,
             },
@@ -55,6 +54,26 @@ module.exports = (options) => {
           extractComments: true,
         }),
       ],
+      splitChunks: {
+        maxInitialRequests: 25,
+        minSize: 20000,
+        chunks: 'all',
+        cacheGroups: {
+          framework: {
+            chunks: 'all',
+            name: 'framework',
+            test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|react-redux|redux|scheduler|styled-components|make-plural|@lingui|prop-types)[\\/]/,
+            priority: 40,
+            // Don't let webpack eliminate this chunk (prevents this chunk from
+            // becoming a part of the commons chunk)
+            enforce: true,
+          },
+          commons: {
+            name: 'commons',
+            priority: 20,
+          },
+        },
+      },
     },
     resolve: {
       modules: [path.resolve(__dirname, '../src/client')],

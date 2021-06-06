@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 import Router from 'services/router';
-import Suspense from 'services/suspense';
 import { Localization } from 'services/hooks/use-language';
 import Loader from 'views/components/loader';
 
