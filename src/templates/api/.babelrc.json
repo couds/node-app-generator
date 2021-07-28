@@ -1,0 +1,15 @@
+{
+  "compact": false,
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ]
+  ],
+  "sourceType": "unambiguous",
+  "plugins": ["@babel/plugin-proposal-object-rest-spread"]
+}
