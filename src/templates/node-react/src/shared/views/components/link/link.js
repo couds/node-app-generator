@@ -11,8 +11,7 @@ const StyledLink = styled(NavLink)`
 `;
 
 const Link = ({ to, ...props }) => {
-  const { locale, ...others } = useLanguage();
-  console.log(others, { locale });
+  const { locale } = useLanguage();
   return <StyledLink to={`/${locale}${to}`} {...props} />;
 };
 

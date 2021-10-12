@@ -13,26 +13,30 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/shared/views/screens/store/store.js:65
+#: src/shared/views/screens/store/store.js:91
 msgid "API Call Example"
 msgstr "Ejemplo Llamada a la api"
 
-#: src/shared/views/components/layout/layout.js:41
+#: src/shared/views/components/layout/layout.js:48
 msgid "Home"
 msgstr "Inicio"
 
-#: src/shared/views/components/loader/loader.js:18
+#: src/shared/views/components/loader/loader.js:19
 msgid "Loading..."
 msgstr "Cargando"
 
-#: src/shared/views/screens/store/store.js:62
+#: src/shared/views/screens/store/store.js:82
 msgid "Ping Example"
 msgstr "Ejemplo ping-pong"
 
-#: src/shared/views/components/layout/layout.js:44
+#: src/shared/views/components/layout/layout.js:51
 msgid "Store Examples"
 msgstr "Ejemplo Store"
 
-#: src/shared/views/screens/home/home.js:41
+#: src/shared/views/screens/home/home.js:47
+msgid "This is a plural test {0, plural, one {There's # message in your inbox} other {There are # messages in your inbox}}"
+msgstr "Esto es un test de plurales: Tienes {0, plural, one {un mensaje} other {# mensajes}} in your inbox"
+
+#: src/shared/views/screens/home/home.js:44
 msgid "This is a template/boilerplate for app's that use React for all out there that didn't like all the magic made by RCA"
 msgstr "Este es un boilerplate para react"

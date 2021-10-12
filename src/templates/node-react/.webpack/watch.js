@@ -35,6 +35,7 @@ const watching = compiler.watch({
   poll: false,
   clean: true,
 }, (err, stats) => {
+  console.log('Building...')
   if (err || stats.hasErrors()) {
     const info = stats ? stats.toJson() : { errors: [err] };
     info.errors.map((error => {

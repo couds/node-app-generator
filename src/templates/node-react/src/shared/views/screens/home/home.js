@@ -3,6 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { Plural, Trans } from '@lingui/macro';
 
 import logoSrc from 'assets/images/logo.png';
+import Helmet from 'react-helmet';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -34,6 +35,9 @@ const Logo = styled.img`
 const Home = () => {
   return (
     <Container>
+      <Helmet>
+        <title>Home | Test</title>
+      </Helmet>
       <GlobalStyle />
       <Logo alt="logo" src={logoSrc} />
       <h2>
