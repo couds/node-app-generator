@@ -5,7 +5,9 @@ import useLanguage from 'services/hooks/use-language';
 import styled from 'styled-components';
 
 const StyledLink = styled(NavLink)`
-  color: ${({ theme }) => theme.color.link};
+  color: ${({ theme }) => {
+    return theme.color.link;
+  }};
 `;
 
 const Link = ({ to, ...props }) => {

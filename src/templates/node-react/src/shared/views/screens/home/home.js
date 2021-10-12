@@ -1,9 +1,9 @@
 import React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import { Trans } from '@lingui/macro';
+import { Plural, Trans } from '@lingui/macro';
 
 import logoSrc from 'assets/images/logo.png';
-import Icon from 'views/components/icon/icon';
+import Helmet from 'react-helmet';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -35,12 +35,19 @@ const Logo = styled.img`
 const Home = () => {
   return (
     <Container>
+      <Helmet>
+        <title>Home | Test</title>
+      </Helmet>
       <GlobalStyle />
       <Logo alt="logo" src={logoSrc} />
       <h2>
-        <Icon name="logo" color="primary" />
         <Trans>This is a template/boilerplate for app&apos;s that use React for all out there that didn&apos;t like all the magic made by RCA</Trans>
       </h2>
+      <p>
+        <Trans>
+          This is a plural test <Plural value={2} one="There's # message in your inbox" other="There are # messages in your inbox" />
+        </Trans>
+      </p>
     </Container>
   );
 };

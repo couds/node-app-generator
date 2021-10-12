@@ -45,7 +45,6 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.VERSION': JSON.stringify(version),
-      'process.env.IS_PRODUCTION': JSON.stringify(version),
     }),
   ],
   module: {
@@ -54,32 +53,7 @@ module.exports = {
         test: /\.js$/,
         use: {
           loader: 'babel-loader',
-          options: {
-            compact: false,
-            cacheDirectory: true,
-            presets: [
-              [
-                '@babel/env',
-                {
-                  targets: {
-                    node: 'current',
-                  },
-                },
-              ],
-            ],
-            sourceType: 'unambiguous',
-            plugins: ['@babel/plugin-proposal-object-rest-spread'],
-          },
         },
-      },
-      {
-        test: /\.ts$/,
-        use: 'null-loader',
-      },
-      {
-        test: /\.mjs$/,
-        include: /node_modules/,
-        type: 'javascript/auto',
       },
     ],
   },

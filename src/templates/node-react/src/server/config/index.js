@@ -5,11 +5,13 @@ const config = {
   seo: {
     title: 'project__name__',
     description: '',
-  }
+  },
 };
 
-export const clean = () => ({
-  ...config,
-});
+export const clean = () => {
+  return {
+    ...config,
+  };
+};
 
 export default config;

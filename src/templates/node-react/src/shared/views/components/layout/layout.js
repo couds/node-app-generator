@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Link from 'views/components/link';
 import { Trans } from '@lingui/macro';
+import Helmet from 'react-helmet';
+
+import favicon from 'assets/images/logo.png';
 
 const Container = styled.div`
   width: 100%;
@@ -33,21 +36,26 @@ const Navbar = styled.nav`
   }
 `;
 
-const Layout = ({ children }) => (
-  <>
-    <Navbar>
-      <Container>
-        <Link to="/">
-          <Trans>Home</Trans>
-        </Link>
-        <Link to="/store">
-          <Trans>Store Examples</Trans>
-        </Link>
-      </Container>
-    </Navbar>
-    <Content>{children}</Content>
-  </>
-);
+const Layout = ({ children }) => {
+  return (
+    <>
+      <Helmet>
+        <link rel="icon" type="image/png" href={favicon} sizes="64x64" />
+      </Helmet>
+      <Navbar>
+        <Container>
+          <Link to="/">
+            <Trans>Home</Trans>
+          </Link>
+          <Link to="/split">
+            <Trans>Split Examples</Trans>
+          </Link>
+        </Container>
+      </Navbar>
+      <Content>{children}</Content>
+    </>
+  );
+};
 
 Layout.propTypes = {
   children: PropTypes.node,

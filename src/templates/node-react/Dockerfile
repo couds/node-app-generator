@@ -1,4 +1,4 @@
-FROM node:12 as base
+FROM node:14 as base
 WORKDIR /code
 ADD package.json package.json
 ADD package-lock.json package-lock.json
@@ -7,7 +7,6 @@ RUN npm ci --silent --no-optional
 ADD src src
 ADD .webpack .webpack
 ADD .linguirc .linguirc
-ADD .babelrc .babelrc
 
 FROM base as builder
 ARG NODE_ENV=production
@@ -15,8 +14,10 @@ ARG VERSION
 ARG CDN
 RUN npm run build
 
-FROM node:12-alpine
+FROM node:14-alpine
 RUN npm i -g nodemon
+RUN adduser -D -g '' nodeuser
+USER nodeuser
 WORKDIR /code
 COPY --from=builder /code/dist/ .
 ENV PORT 80
