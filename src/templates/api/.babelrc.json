@@ -9,7 +9,5 @@
         }
       }
     ]
-  ],
-  "sourceType": "unambiguous",
-  "plugins": ["@babel/plugin-proposal-object-rest-spread"]
+  ]
 }
