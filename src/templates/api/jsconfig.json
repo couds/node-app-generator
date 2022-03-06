@@ -17,6 +17,7 @@
       "allowSyntheticDefaultImports": true
   },
   "exclude": [
-      "dist"
+      "dist",
+      "node_modules"
   ]
 }
