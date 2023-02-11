@@ -31,7 +31,7 @@
     "eslint-import-resolver-webpack": "0.13.2",
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-prettier": "4.0.0",
-    "nodemon": "2.0.15",
+    "nodemon": "2.0.20",
     "prettier": "2.5.1",
     "prettier-eslint": "13.0.0",
     "webpack": "5.70.0",
